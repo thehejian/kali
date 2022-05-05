@@ -42,4 +42,34 @@ sudo systemctl enable rc-local.server
 #kaiji qidong rc-local fuwu, rc-local qidong ssserver, anzhao wenjian(shadowsocks.json)qidong
 
 
+##############################################################docker anzhaung shadowsocks
+yum -y install epel-release
+#anzhuang epel yuan
+
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+#anzhuang docker yuan
+
+yum -y install docker-ce
+
+systemctl start docker
+systemctl enable docker
+
+docker pull shadowsocks/shadowsocks-libev
+
+docker run --privileged --restart=always -d -e PASSWORD=hjian -e METHOD=aes-256-gcm -p 8388:8388/udp shadowsocks/shadowsocks-libev
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
