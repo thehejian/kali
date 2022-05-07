@@ -25,4 +25,5 @@ shezhi	dianyuan	anquanxing	zidong suoding huihua - congbu	xitong jinru shuimian 
 
 #ctrl + shift + jiahao		fangda ziti
 
-
+#切换中文
+https://knightyun.github.io/2020/04/15/linux-chinese
