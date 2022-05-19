@@ -22,7 +22,16 @@ rz2=sr1(IP(dst="47.112.144.203")/TCP(dport=445,flags="SA"))
 flags=“SA”发送SYN、ACk
 
 
-nmap进行
+nmap进行僵尸扫描
+扫描192.168.1.0
+
+#网段中扫描僵尸主机的符合条件的
+[root@hejian_alicloud ~]# nmap 172.26.164.0/24 -p1-1024 --script=ipidseq.nse > nmap_ipid.txt
+结果中有_ipidseq:Incremental!的IP主机可能作为僵尸主机
+
+nmap 192.168.1.163 -sI 192.168.1.54 -p1-100
+192.168.1.16目标主机
+192.168.1.54僵尸主机，前面扫描的
 
 
 
