@@ -1,1 +1,131 @@
+诱探、欺骗
+
+一般抓包
+ARP协议：地址解析，IP解析成mac
+ICMP协议
+TCP协议
+UDP协议
+DNS协议
+HTTP协议
+FTP协议
+
+模式
+混杂模式 （默认）：全部数据、流经本机
+普通模式：本机的加广播包，其他的丢弃
+
+ip.addr == 220.181.38.149
+
+筛选TCP数据包
+tcp
+
+筛选ARP协议
+arp
+Address Resolution Protocol (reply)
+
+
+筛选udp
+udp
+DNS、ICMP基于UDP，传输层之上的；不需要三次握手，负载低，响应快
+
+筛选http
+http
+
+筛选DNS
+dns
+User Datagram Protocol, Src Port: 61026 (61026), Dst Port: domain (53)
+基于UDP
+
+筛选主机发送给网卡的数据包
+
+源主机IP筛选
+ip.src_host==120.233.150.138
+
+或
+ip.src_host==120.233.150.138 or ip.dst_host==7.250.106.118
+
+且
+ip.src_host==120.233.150.138 and ip.dst_host==7.250.106.118
+
+关闭混杂模式，仅查看和本机相关的
+
+#############筛选ARP
+
+nmap构造ARP
+hejian@hejiandeMacBook-Air ~ % nmap -sn 7.250.106.118
+sn ping模式，显示mac
+
+Address Resolution Protocol (request)
+请求包
+
+Opcode: request (1)
+1代表arp请求包
+
+Address Resolution Protocol (reply)
+回复包
+
+Opcode: reply (2)
+应答包
+
+##############筛选ICMP包
+icmp
+
+Internet Protocol Version 4, Src: baidu.com (220.181.38.251), Dst: hejiandeMacBook-Air.local (7.250.106.118)
+源IP，目标IP都能看到
+
+Internet Control Message Protocol
+
+Type: 8 (Echo (ping) request)
+类型8位ping包的请求包
+
+Type: 0 (Echo (ping) reply)
+类型0位ping的回复包
+
+Identifier (LE): 18623 (0x48bf)
+和请求包的序列号是一致
+
+##########TCP协议
+三次握手，四次挥手
+
+Transmission Control Protocol, Src Port: 45901 (45901), Dst Port: 59726 (59726), Seq: 87571, Ack: 1, Len: 1390
+
+Flags: 0x010 (ACK)
+    000. .... .... = Reserved: Not set
+    ...0 .... .... = Nonce: Not set
+    .... 0... .... = Congestion Window Reduced (CWR): Not set
+    .... .0.. .... = ECN-Echo: Not set
+    .... ..0. .... = Urgent: Not set
+    .... ...1 .... = Acknowledgment: Set
+    .... .... 0... = Push: Not set
+    .... .... .0.. = Reset: Not set
+    .... .... ..0. = Syn: Not set
+    .... .... ...0 = Fin: Not set
+    [TCP Flags: ·······A····]
+
+1指的是当前位置
+
+统计--流量图，更直观展现
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
