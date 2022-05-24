@@ -106,7 +106,62 @@ Flags: 0x010 (ACK)
 统计--流量图，更直观展现
 
 
+#######HTTP
+HTTP基于TCP
+HTTP是tcp的上层协议
 
+1264	2022-05-20 16:59:11.014726	7.250.106.118	baidu.cn	HTTP	127	HEAD / HTTP/1.1 
+右键---追踪流---TCP流
+
+HEAD / HTTP/1.1
+Host: baidu.cn
+User-Agent: curl/7.79.1
+Accept: */*
+
+HTTP/1.1 200 OK
+Date: Fri, 20 May 2022 08:59:11 GMT
+Server: Apache
+Last-Modified: Tue, 12 Jan 2010 13:48:00 GMT
+ETag: "51-47cf7e6ee8400"
+Accept-Ranges: bytes
+Content-Length: 81
+Cache-Control: max-age=86400
+Expires: Sat, 21 May 2022 08:59:11 GMT
+Connection: Keep-Alive
+Content-Type: text/html
+
+
+#############解决网络被黑
+场景1：可以ping通网关，不能上网（TTL值被改为1）
+
+修改主机的TTL值
+TTL是什么？
+数据报文的生存周期，默认64；
+每经过一个路由节点，TTL的值减1.TTL为0时，说明目标地址不可达并返回：Time to live exceeded
+防止数据包无限制转发；
+
+[root@hejian_alicloud ~]# cat /proc/sys/net/ipv4/ip_default_ttl
+64
+
+hejian@hejiandeMacBook-Air ~ % ping baidu.cn
+PING baidu.cn (220.181.38.148): 56 data bytes
+64 bytes from 220.181.38.148: icmp_seq=0 ttl=47 time=29.951 ms
+64 bytes from 220.181.38.148: icmp_seq=1 ttl=47 time=36.228 ms
+64 bytes from 220.181.38.148: icmp_seq=2 ttl=47 time=28.216 ms
+64 bytes from 220.181.38.148: icmp_seq=3 ttl=47 time=35.734 ms
+^C
+--- baidu.cn ping statistics ---
+4 packets transmitted, 4 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 28.216/32.532/36.228/3.507 ms
+
+ping百度经过了 64-47=17个路由
+
+安装mtr
+[root@hejian_alicloud ~]# yum install mtr -y
+
+mac安装
+brew install git
+brew install mtr
 
 
 
