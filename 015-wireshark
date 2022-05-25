@@ -168,7 +168,7 @@ brew install mtr
 [root@hejian_alicloud ~]# mtr 8.8.8.8
 
 
-
+wireshark 保存 tcpdump pcap格式
 
 
 
