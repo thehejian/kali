@@ -156,12 +156,16 @@ round-trip min/avg/max/stddev = 28.216/32.532/36.228/3.507 ms
 
 ping百度经过了 64-47=17个路由
 
+##############查看路由，经过多少跳
 安装mtr
 [root@hejian_alicloud ~]# yum install mtr -y
 
 mac安装
 brew install git
 brew install mtr
+
+[root@hejian_alicloud ~]# yum install mtr
+[root@hejian_alicloud ~]# mtr 8.8.8.8
 
 
 
