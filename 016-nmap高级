@@ -111,6 +111,22 @@ nmap -sS -sU -T4 -v 127.0.0.1
 -sS 半开放，扫描TCP SYN
 -sU 半开放，扫描UDP
 
+-sn ping扫描，速度快，容易被拦截
+
+[root@hejian_alicloud ~]# nmap -F -sV -T4 -O --version-light 127.0.0.1
+
+-sV 端口及版本信息 22/tcp open  ssh     OpenSSH 7.4 (protocol 2.0)
+-O OS 
+   OS CPE: cpe:/o:linux:linux_kernel:3
+   OS details: Linux 3.7 - 3.9
+--version-light 设定侦测等级等于2
+-F 加强模式，快速扫描
+
+###路由扫描
+[root@hejian_alicloud ~]# nmap -sn -traceroute baidu.com
+-sn ping扫描
+-traceroute 路由跃点
+
 
 
 
