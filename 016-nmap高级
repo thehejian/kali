@@ -30,28 +30,7 @@ PORT     STATE  SERVICE
 ###扫描主机端口及详细信息
 小写v
 jian@hejiandeMacBook-Air ~ % nmap -v 47.112.144.203
-Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-25 20:15 CST
-Initiating Ping Scan at 20:15
-Scanning 47.112.144.203 [2 ports]
-Completed Ping Scan at 20:15, 0.05s elapsed (1 total hosts)
-Initiating Parallel DNS resolution of 1 host. at 20:15
-Completed Parallel DNS resolution of 1 host. at 20:15, 0.15s elapsed
-Initiating Connect Scan at 20:15
-Scanning 47.112.144.203 [1000 ports]
-Discovered open port 22/tcp on 47.112.144.203
-Completed Connect Scan at 20:16, 43.19s elapsed (1000 total ports)
-Nmap scan report for 47.112.144.203
-Host is up (0.040s latency).
-Not shown: 995 filtered tcp ports (no-response)
-PORT     STATE  SERVICE
-22/tcp   open   ssh
-80/tcp   closed http
-443/tcp  closed https
-3389/tcp closed ms-wbt-server
-8080/tcp closed http-proxy
-
-Read data files from: /opt/homebrew/bin/../share/nmap
-Nmap done: 1 IP address (1 host up) scanned in 43.45 seconds
+-v 更详细内容
 
 ###扫描端口范围
 0-65535
@@ -69,38 +48,7 @@ Nmap done: 1 IP address (1 host up) scanned in 22.73 seconds
 
 指定端口和范围扫描
 hejian@hejiandeMacBook-Air ~ % nmap -p 1-22,80,443,445 47.112.144.203
-Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-25 20:20 CST
-Nmap scan report for 47.112.144.203
-Host is up (0.050s latency).
 
-PORT    STATE    SERVICE
-1/tcp   filtered tcpmux
-2/tcp   filtered compressnet
-3/tcp   filtered compressnet
-4/tcp   filtered unknown
-5/tcp   filtered rje
-6/tcp   filtered unknown
-7/tcp   filtered echo
-8/tcp   filtered unknown
-9/tcp   filtered discard
-10/tcp  filtered unknown
-11/tcp  filtered systat
-12/tcp  filtered unknown
-13/tcp  filtered daytime
-14/tcp  filtered unknown
-15/tcp  filtered netstat
-16/tcp  filtered unknown
-17/tcp  filtered qotd
-18/tcp  filtered msp
-19/tcp  filtered chargen
-20/tcp  filtered ftp-data
-21/tcp  filtered ftp
-22/tcp  open     ssh
-80/tcp  closed   http
-443/tcp closed   https
-445/tcp filtered microsoft-ds
-
-Nmap done: 1 IP address (1 host up) scanned in 2.86 seconds
 
 #查进程，关进程
 [root@hejian_alicloud ~]# netstat -lntup
@@ -112,6 +60,89 @@ tcp6       0      0 ::1:25                  :::*                    LISTEN      
 udp        0      0 0.0.0.0:68              0.0.0.0:*                           795/dhclient        
 udp        0      0 127.0.0.1:323           0.0.0.0:*                           529/chronyd         
 udp6       0      0 ::1:323                 :::*                                529/chronyd
+
+找到端口ID
+[root@hejian_alicloud ~]# lsof -i:22
+COMMAND  PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+sshd    1113 root    3u  IPv4  16923      0t0  TCP *:ssh (LISTEN)
+sshd    1933 root    3u  IPv4 166450      0t0  TCP iZwz99m2cb6tkybu0ywzedZ:ssh->113.137.58.78:10141 (ESTABLISHED)
+
+按ID找到服务和进程目录
+[root@hejian_alicloud ~]# ps aux | grep 1113
+root      1113  0.0  0.2 112984  4296 ?        Ss   02:00   0:00 /usr/sbin/sshd -D
+root      1985  0.0  0.0 112812   980 pts/0    R+   12:10   0:00 grep --color=auto 1113
+如果查不到，有可能是木马
+which 进程ID ，然后kill
+
+nmap扫描目标主机的操作系统
+
+[root@hejian_alicloud ~]# nmap -sS -O www.xuegod.cn
+
+-sS 半开扫描
+-O 扫描操作系统，每种操作系统都有一个指纹；不比打开全部TCP扫描；
+   发送 SYN，如果返回SYN|ACK，成功
+   如果返回RST，表示没有监听；端口断开
+
+扫描局域网
+[root@hejian_alicloud ~]# nmap -sS -O 172.26.164.0/24
+
+扫描端口
+[root@hejian_alicloud ~]# nmap -v -p 22 172.26.164.203-204
+-v 更详细信息
+
+
+隐藏扫描
+[root@hejian_alicloud ~]# nmap -v -sS -O --randomize-hosts --scan-delay 3000ms -p 80 172.26.164.200-205
+--randomize-hosts 随机扫描
+--scan-delay 延时扫描，时间为秒
+
+通配符指定扫描
+[root@hejian_alicloud ~]# nmap -v -sS -O --randomize-hosts --scan-delay 3 -p 80 172.26.*.200-205
+
+###################nmap图形化界面
+kali-应用程序-信息收集-zenmap
+
+namap -A -T4 -v 127.0.0.1
+-A 对操作系统、版本号、路由进行探测
+-T4 0-6级别越高，速度越快
+
+UDP\TCP扫描
+nmap -sS -sU -T4 -v 127.0.0.1
+-sS 半开放，扫描TCP SYN
+-sU 半开放，扫描UDP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
