@@ -14,11 +14,159 @@ Nops  空指令模块
 ┌──(root💀kali-linux-2021-3)-[/usr/share/metasploit-framework]
 └─# ls
 
-metasploitable2 靶机
+#####metasploitable2 靶机
 https://sourceforge.net/projects/metasploitable/
 
 用户名：msfadmin
 密码：msfadmin
+
+修改静态IP地址
+vim /etc/network/interfaces
+改为静态IP
+auto eth0
+iface eth0 inet static
+address 192.168.1.180
+netmask 255.255.255.0
+gateway 192.168.1.0
+
+/etc /init.d/networking restart
+#system restart networking
+
+####metasploit基本使用
+需要使用Postgresql数据库
+  自由软件-关系型数据库管理系统
+https://www.postgresql.org
+kali默认已经集成
+
+Postgresql和MySQL
+  postgresql适合金融、电信、ERP、CRM等
+  MySQL适合互联网
+# systemctl start postgresql 
+# systemctl enable postgresql
+
+08漏洞利用工具集
+#msfconsole 命令行启动
+
+帮助
+help
+
+核心命令
+connect
+远程连接主机，一般用于内网试探
+msf6 > connect 10.211.55.1 80
+
+msf6 > connect flyint.cc 80
+连接
+
+get /
+查看服务器信息
+
+rank级别
+  excellent
+  great
+  good
+  normal
+  average
+  low
+  manual
+
+[*] Connected to flyint.cc:80 (via: 10.211.55.6:41049)
+HTTP/1.1 400 Bad Request
+Server: cloudflare
+Date: Fri, 27 May 2022 06:58:56 GMT
+Content-Type: text/html
+Content-Length: 155
+Connection: close
+CF-RAY: -
+
+<html>
+<head><title>400 Bad Request</title></head>
+<body>
+<center><h1>400 Bad Request</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+
+1.模块查看命令 show
+msf6 > show exploits
+显示模块列表
+
+msf6 > show -h
+[*] Valid parameters for the "show" command are: all, encoders, nops, exploits, payloads, auxiliary, post, plugins, info, options, favorites
+
+2.##按名称进行查找
+模块相关命令search搜索使用方法
+msf6 > search name:mysql
+
+search ms08_067
+
+##按路径进行查找
+msf6 > search path:/windows
+
+3.平台查找，缩小查找范围 platform
+更精确，查找的级别更高
+msf6 > search platform:mysql
+msf6 > search platform:windows
+
+4.通过类型查找
+type:(encoders编码器, nops空指令, exploit渗透攻击, payloads攻击载荷, auxiliary辅助模块, post后渗透攻击, plugins, info, options, favorites)
+msf6 > search type:exploit
+
+5.联合搜索
+msf6 > search type:exploit platform:mysql
+msf6 > search type:auxiliary platform:mysql
+#platform可能搜不到，换name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
