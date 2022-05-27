@@ -1,2 +1,31 @@
 DNAMP python写的；C/S结构
 
+#####————》服务器端
+[root@hejian_alicloud ~]# openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out server.pem
+
+[root@hejian_alicloud ~]# ls
+cloud_linux  kali  key.pem  network_security  nmap_ipid.txt  ProxyPool  server.pem
+
+cat key.pem >> server.pem
+
+[root@hejian_alicloud ~]# cat nmap.txt 
+nmap 47.112.144.1-10
+nmap 47.112.144.11-30
+nmap 47.112.144.31-40
+nmap 47.112.144.41-50
+
+[root@hejian_alicloud ~]# /usr/bin/dnmap_server -f nmap.txt -P server.pem
+监听中（看连接的client）
+
+#####————》客户端
+/usr/bin/dnmap_client -s 47.112.144.203 -P 46001
+-s 服务端地址
+-P 服务端端口，默认46001
+
+
+###————》服务端看结果
+
+
+
+
+
