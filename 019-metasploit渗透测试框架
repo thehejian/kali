@@ -1,0 +1,31 @@
+测试渗透平台；查找，利用和验证漏洞
+攻击工具开发平台
+https://www.metasploit.com
+
+模块：
+AUX 辅助模块
+Exploit 渗透攻击模块
+Post  后渗透攻击模块
+payloads  攻击载荷模块
+  目标机和攻击机稳定连接，可返回shell，也可以程序注入
+Encoders  编码器模块
+Nops  空指令模块
+
+┌──(root💀kali-linux-2021-3)-[/usr/share/metasploit-framework]
+└─# ls
+
+metasploitable2 靶机
+https://sourceforge.net/projects/metasploitable/
+
+用户名：msfadmin
+密码：msfadmin
+
+
+
+
+
+
+
+
+
+
