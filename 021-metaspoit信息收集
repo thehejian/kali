@@ -1,0 +1,55 @@
+获取主机信息，系统用户信息，进程信息
+使用metaspoit的nmap和arp_sweep
+
+msfconsole
+msf6 > db_nmap -sV 192.168.1.1
+-sV 版本检测
+msf6 > search arp_sweep
+msf6 > use auxiliary/scanner/discovery/arp_sweep
+msf6 axuiliary(scanner/discovery/arp_sweep) > show options
+msf6 axuiliary(scanner/discovery/arp_sweep) > set RHOSTS 192.168.1.0/24
+msf6 axuiliary(scanner/discovery/arp_sweep) > set THREADS 15
+线程数
+msf6 axuiliary(scanner/discovery/arp_sweep) > run
+msf6 axuiliary(scanner/discovery/arp_sweep) > back
+
+半连接扫描tcp
+msf6 > search portscan
+msf6 > use auxiliary/scanner/portscan/syn
+msf6 auxiliary（scanner/portscan/syn）> show option
+msf6 auxiliary（scanner/portscan/syn）> set RHOSTS 192.168.1.1
+msf6 auxiliary（scanner/portscan/syn）> set PORTS 22-25,80
+msf6 auxiliary（scanner/portscan/syn）> run
+
+使用auxiliary/sniffer下的psnuffle模块进行密码嗅探
+msf5 > search psnuffle
+msf5 > use auxiliary/sniffer/psnuffle
+msf5 auxiliary（sniffer/psnuffle）> info
+查看模块信息
+msf5 auxiliary（sniffer/psnuffle）> show options
+msf5 auxiliary（sniffer/psnuffle）> run
+可以嗅探整个局域网密码
+
+靶机lftp登录
+lftp msfadmin 192.168.1.180
+
+msf5 auxiliary（sniffer/psnuffle）> jobs -K
+杀所有进程
+
+基于snmp协议收集主机信息
+简单网络管理协议
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
