@@ -1,4 +1,4 @@
-arp tcp smb ssh
+arp tcp smb ssh ftp
 
 获取主机信息，系统用户信息，进程信息
 使用metaspoit的nmap和arp_sweep
@@ -158,7 +158,8 @@ msf6 auxiliary(scanner/ftp/ftp_login) > set RHOSTS 127.0.0.1
 msf6 auxiliary(scanner/ftp/ftp_login) > set USERPASS_FILE /usr/share/metasploit-framework/data/wordlists/root_userpass.txt
 msf6 auxiliary(scanner/ftp/ftp_login) > show options
 msf6 auxiliary(scanner/ftp/ftp_login) > run
- 拿到密码后，
+ 拿到密码后，使用ftp软件就能登录
+ 
 
 
 
