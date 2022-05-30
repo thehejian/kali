@@ -1,6 +1,7 @@
 获取主机信息，系统用户信息，进程信息
 使用metaspoit的nmap和arp_sweep
 
+####————》arp_sweep 扫描
 msfconsole
 msf6 > db_nmap -sV 192.168.1.1
 -sV 版本检测
@@ -13,7 +14,7 @@ msf6 axuiliary(scanner/discovery/arp_sweep) > set THREADS 15
 msf6 axuiliary(scanner/discovery/arp_sweep) > run
 msf6 axuiliary(scanner/discovery/arp_sweep) > back
 
-半连接扫描tcp
+######——》半连接扫描tcp portscan
 msf6 > search portscan
 msf6 > use auxiliary/scanner/portscan/syn
 msf6 auxiliary（scanner/portscan/syn）> show option
@@ -21,7 +22,7 @@ msf6 auxiliary（scanner/portscan/syn）> set RHOSTS 192.168.1.1
 msf6 auxiliary（scanner/portscan/syn）> set PORTS 22-25,80
 msf6 auxiliary（scanner/portscan/syn）> run
 
-使用auxiliary/sniffer下的psnuffle模块进行密码嗅探
+######——》使用auxiliary/sniffer下的psnuffle模块进行密码嗅探
 msf5 > search psnuffle
 msf5 > use auxiliary/sniffer/psnuffle
 msf5 auxiliary（sniffer/psnuffle）> info
@@ -36,9 +37,69 @@ lftp msfadmin 192.168.1.180
 msf5 auxiliary（sniffer/psnuffle）> jobs -K
 杀所有进程
 
-基于snmp协议收集主机信息
+###############__>基于snmp协议收集主机信息
 简单网络管理协议，包含一个应用层协议，数据库模型和一组资源对象
 默认不对外开放，需要在靶机上设置
+
+vim /etc/default/snmptrapd
+127.0.0.1 改为 0.0.0.0
+第11行
+systemctl restart snmpd
+netstat -lntpn | grep 161
+
+└─# msfconsole 
+msf6 > search snmp_enum
+msf6 > use auxiliary/scanner/snmp/snmp_enum_hp_laserjet
+msf6 auxiliary(scanner/snmp/snmp_enum_hp_laserjet) > show options
+msf6 auxiliary(scanner/snmp/snmp_enum_hp_laserjet) > set RHOSTS 192.168.1.180
+msf6 auxiliary(scanner/snmp/snmp_enum_hp_laserjet) > run
+
+###########——》基于SMB协议收集
+服务器消息块server Message Block 网络文件共享系统
+使用smb_version 扫描版本号
+
+msf6 > search smb_version
+msf6 > use auxiliary/scanner/smb/smb_version
+msf6 auxiliary(scanner/smb/smb_version) > show options
+msf6 auxiliary(scanner/smb/smb_version) > set RHOSTS 192.168.1.180, 192.168.1.56
+多ip逗号后面加空格
+靶机不能休眠或关机
+msf6 auxiliary(scanner/smb/smb_version) > run
+
+基于smb_enumshares，基于smb协议扫共享文件（账号、密码）
+目标的账号密码需要知道
+
+msf6 > search smb_enumshares
+msf6 > use auxiliary/scanner/smb/smb_enumshares
+msf6 auxiliary(scanner/smb/smb_enumshares) > show options
+msf6 auxiliary(scanner/smb/smb_enumshares) > set RHOSTS 192.168.1.180
+msf6 auxiliary(scanner/smb/smb_enumshares) > set SMBUser administrator
+msf6 auxiliary(scanner/smb/smb_enumshares) > set SMBpPass 123456
+msf6 auxiliary(scanner/smb/smb_enumshares) > run
+
+使用smb_lookupid 扫描系统用户信息（SID枚举）
+
+msf6 > search smb_lookupsid
+msf6 > use uxiliary/scanner/smb/smb_lookupsid
+msf6 auxiliary(scanner/smb/smb_lookupsid) > show options
+msf6 auxiliary(scanner/smb/smb_lookupsid) > set RHOST 192.168.1.180
+msf6 auxiliary(scanner/smb/smb_lookupsid) > set SMBUser administrator
+msf6 auxiliary(scanner/smb/smb_lookupsid) > set SMBPass 123456
+msf6 auxiliary(scanner/smb/smb_lookupsid) > run
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
