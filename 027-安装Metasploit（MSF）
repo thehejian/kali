@@ -1,0 +1,38 @@
+https://blog.csdn.net/weixin_45588247/article/details/119614618?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522165416145316780366522970%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=165416145316780366522970&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-119614618-null-null.142^v11^control,157^v13^control&utm_term=msf&spm=1018.2226.3001.4187
+
+Metasploit的安装和更新升级：
+1. 一键安装MSF：
+  在一般的linux中，默认是不安装MSF的。以下是在非kali的Linux下安装MSF框架。
+
+所需命令：
+
+#一键安装MSF：
+curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && chmod 755 msfinstall && ./msfinstall
+ 
+adduser msf                           #添加msf用户
+su msf                                #切换到msf用户
+cd  /opt/metasploit-framework/bin     #切换到msf所在的目录 
+./msfconsole                          #以后启动msfconsole，都切换到msf用户下启动，这样会同步数据库。如果使用root用户启动的话，不会同步数据库  
+ 
+#也可以将msfconsole加入到执行目录下，这样在任何目录直接msfconsole就可以了：
+ln -s /opt/metasploit-framework/bin/msfconsole /usr/bin/msfconsole
+ 
+#备注：
+#初次运行msf会创建数据库，但是msf默认使用的PostgreSQL数据库不能与root用户关联，这也这也就是需要新建用户msf来运行metasploit的原因所在。如果你一不小心手一抖，初次运行是在root用户下，请使用 msfdb reinit 命令，然后使用非root用户初始化数据库。        
+ 
+# 非kali环境下更新升级MSF：
+msfupdate							   # MSF后期的升级
+# kali环境下更新升级MSF：
+apt update 							   # 更新安装包信息；只检查，不更新（已安装的软件包是否有可用的更新，给出汇总报告）
+apt upgrade 						   # 更新已安装的软件包，不删除旧包；
+apt full-upgrade					   # 升级包，删除旧包
+ 
+ 
+ 
+ 
+2. MSF的更新升级：
+2.1 非kali环境下更新升级MSF：
+命令：
+
+msfupdate  #MSF后期更新升级
+1
