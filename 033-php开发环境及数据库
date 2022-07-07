@@ -1,0 +1,88 @@
+php开发环境搭建
+LNMP Linux Nginx Mysql/MariDB Php/perl/Python
+
+mysql数据库管理系统，关系型数据库
+关系型数据库，数据、关系和对数据的约束组成的数据关系来存放和管理数据
+
+PHP超文本预处理器：脚本解释器
+是C语言写的，语法接近
+
+web服务器
+工作模式：B/S模式
+端口：80 443
+
+LNMP环境搭建
+[root@hejian_alicloud ~]# yum -y install httpd mariadb mariadb-server php php-mysql
+安装
+[root@hejian_alicloud ~]# systemctl enable mariadb httpd
+开启启动
+[root@hejian_alicloud ~]# systemctl start mariadb httpd
+启动
+[root@hejian_alicloud ~]# ps aux | egrep 'mariadb|httpd'
+查看是否启动成功
+
+数据库
+[root@hejian_alicloud ~]# mysqladmin -u root password "123456"
+设置数据库密码
+[root@hejian_alicloud ~]# mysql -uroot -p123456
+登录数据库
+MariaDB [(none)]> exit;
+Bye
+成功后退出
+
+PHP
+[root@hejian_alicloud ~]# cd /var/www/html/
+[root@hejian_alicloud html]# ls
+[root@hejian_alicloud html]# vim test.php
+<?php
+        phpinfo();
+?>
+
+浏览
+http://47.112.144.203/test.php
+能访问通，php成功
+
+######PHP连接mysql数据库
+php要连接数据库，需要 mysql服务器地址、用户名和密码
+
+语法：mysql_connect(db_host:db_port,db_user,db_pwd)
+db_host 默认3306，可以默认不填
+
+[root@hejian_alicloud ~]# cd /var/www/html/
+[root@hejian_alicloud html]# vim conn.php
+<?php
+        $result = mysql_connect("127.0.0.1:3306","root","123456");
+        if(!$result){
+                echo "数据库连接失败";
+        }
+?>
+
+http://47.112.144.203/conn.php
+访问无提示,则成功；
+
+[root@hejian_alicloud html]# vim conn.php
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
