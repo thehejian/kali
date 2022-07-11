@@ -61,6 +61,183 @@ http://47.112.144.203/conn.php
 访问无提示,则成功；
 
 [root@hejian_alicloud html]# vim conn.php
+<?php
+        $result = mysql_connect("127.0.0.1:3306","root","123456");
+        if(!$result){
+                echo "数据库连接失败";
+        }
+        mysql_query("set names 'utf8'");
+        $res = mysql_select_db("mysql");
+        if(!$res){
+                echo "不能连接到该数据库:\n" . mysql_error();
+        }
+?>
+
+####数据库的增删改查
+[root@hejian_alicloud html]# mysql -uroot -p123456
+MariaDB [(none)]> show databases;
+MariaDB [(none)]> create database xuegod;
+创建数据库
+MariaDB [(none)]> show databases;
+MariaDB [(none)]> use xuegod;
+使用数据库
+MariaDB [xuegod]> create table users(id int(10) not null,username varchar(50),passwd varchar(50));
+创建数据表
+MariaDB [xuegod]> show tables;
+查看表
+MariaDB [xuegod]> desc users;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| id       | int(10)     | NO   |     | NULL    |       |
+| username | varchar(50) | YES  |     | NULL    |       |
+| passwd   | varchar(50) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+
+MariaDB [xuegod]> select * from users;
+Empty set (0.00 sec)
+查看表数据
+
+####插入数据
+语法：
+insert[into] 表名 [(字段名1,字段名2,...)]values(值表达式1,值表达式2,...),(...),...;
+
+user表中插入一条记录
+PHP中进行
+[root@hejian_alicloud html]# cp conn.php add.php
+<?php
+        $result = mysql_connect("127.0.0.1:3306","root","123456");
+        if(!$result){
+                echo "数据库连接失败";
+        }
+        mysql_query("set names 'utf8'");
+        $res = mysql_select_db("xuegod");
+        if(!$res){
+                echo "不能连接到该数据库:\n" . mysql_error();
+        }
+
+$sql = "insert into users(id,username,passwd) values(1,'root','123456'),(2,'laohe','123789')";
+$result = mysql_query($sql);
+if($result){
+                echo "数据插入成功";
+        }else{
+                echo "数据插入失败";
+        }
+?>
+
+
+#进数据库查下
+[root@hejian_alicloud html]# mysql -uroot -p123456
+MariaDB [(none)]> show databases;
+MariaDB [(none)]> use xuegod;
+MariaDB [xuegod]> select * from users;
++----+----------+--------+
+| id | username | passwd |
++----+----------+--------+
+|  1 | root     | 123456 |
++----+----------+--------+
+1 row in set (0.00 sec)
+查看表中的详细内容；
+
+###删除数据
+语法：delete from 表名 【where 条件】;
+[root@hejian_alicloud html]# cp add.php delete.php
+[root@hejian_alicloud html]# vim delete.php
+
+<?php
+        $result = mysql_connect("127.0.0.1:3306","root","123456");
+        if(!$result){
+                echo "数据库连接失败";
+        }
+        mysql_query("set names 'utf8'");
+        $res = mysql_select_db("xuegod");
+        if(!$res){
+                echo "不能连接到该数据库:\n" . mysql_error();
+        }
+
+$sql = "delete from users where id=1 or username='laohe'";
+$result = mysql_query($sql);
+if($result){
+                echo "数据删除成功";
+        }else{
+                echo "数据删除失败";
+        }
+
+
+?>
+
+###修改
+语法：update 表名 set 字段1=值1 字段2=值2【where 条件】
+删除和更新必须带条件
+[root@hejian_alicloud html]# cp delete.php edit.php
+[root@hejian_alicloud html]# vim edit.php
+
+<?php
+        $result = mysql_connect("127.0.0.1:3306","root","123456");
+        if(!$result){
+                echo "数据库连接失败";
+        }
+        mysql_query("set names 'utf8'");
+        $res = mysql_select_db("xuegod");
+        if(!$res){
+                echo "不能连接到该数据库:\n" . mysql_error();
+        }
+
+$sql = "update users set username='root1' where id=1";
+$result = mysql_query($sql);
+if($result){
+                echo "数据修改成功";
+        }else{
+                echo "数据修改失败";
+        }
+
+
+?>
+
+
+###查询
+select 字段或表达式列表 【from 子句】 【where 子句】 【order by 子句】 【limit 子句】;
+order by排序
+        order by 字段1 [asc|desc], 字段2 [asc|desc], ...
+        asc 默认排序，正序；desc倒叙；
+limit 起始行号，要取出的行号；
+        1.起始行号，是从0开始算的；
+        2.起始行号和数据中的任意字段没有关系；
+        3.要取出的行数也是一个数字，自然用过是大于0的；
+        4.limit 行数，相当于limit 0,行数
+
+#导入数据表
+MariaDB [xuegod]> source /root/book.sql;
+MariaDB [xuegod]> select * from books;
+MariaDB [xuegod]> desc books;
+查看表中，字段类型
+
+MariaDB [xuegod]> select bId,bName from books;
+仅显示bId和bNmae这两列数据
+
+MariaDB [xuegod]> select bId,price,bName from books where bTypeId=2 order by price;
+先按bTypeId=2筛选（可以不显示分类），再按price正向排序，
+
+MariaDB [xuegod]> select bId,price,bName from books where bTypeId=2 order by price desc limit 0,3;
+先按bTypeId=2筛选（可以不显示分类），再按price倒叙排序top3
+limit 0,3 也可以 limit 3
+
+//php中双斜杠是注释；
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
